@@ -25,9 +25,14 @@ Nous ne traiterons pas les sujets suivants pour ne pas diluer le message princip
 ## Organisation 
 
 Le tutoriel est découpé en chapitres, présentés plus haut. 
-Chaque chapitre est continue sur une branche git. Pour changer de chapitre, il suffit de changer de branche. 
+Tous les chapitres contiennent un dossier `explications` et un dossier `code`, l'un présentant le contexte théorique, l'autre le code. Chaque chapitre est continue sur une branche git. Pour changer de chapitre, il suffit de changer de branche. 
+
+Dans le `README`, vous aurez toujours la branche contenant le chapitre suivant. 
 
 Les branches sont nommées de la façon suivante : `NUMERO_DE_CHAPITRE.SECTION-DESCRIPTION`. Par exemple : `1.2-les-verbes-http`
 
     git branch --list 
     git switch MA_BRANCHE
+
+## Aller au chapitre suivant     
+Maintenant, faites : `git switch 1-HTTP`
