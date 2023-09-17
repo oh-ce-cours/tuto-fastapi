@@ -15,7 +15,8 @@ indépendantes
 
 Un *client* va faire une *requête HTTP* et un *serveur* va lui répondre une *réponse HTTP*. 
 
-TODO: insérer un schema
+![Exemple de requête](images/http-requete-reponse.png)
+Source: [https://explorweb.github.io/cours2018/cours/commande_HTTP_Postman.html]
 
 ## Exemple de requête 
 
