@@ -35,4 +35,4 @@ Les branches sont nommées de la façon suivante : `NUMERO_DE_CHAPITRE.SECTION-D
     git switch MA_BRANCHE
 
 ## Aller au chapitre suivant     
-Maintenant, faites : `git switch 1-HTTP`
+Maintenant, faites : `git switch 2-automatisation-http`
