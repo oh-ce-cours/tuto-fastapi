@@ -16,7 +16,7 @@ indépendantes
 Un *client* va faire une *requête HTTP* et un *serveur* va lui répondre une *réponse HTTP*. 
 
 ![Exemple de requête](images/http-requete-reponse.png)
-Source: [https://explorweb.github.io/cours2018/cours/commande_HTTP_Postman.html]
+Source: https://explorweb.github.io/cours2018/cours/commande_HTTP_Postman.html
 
 ## Exemple de requête 
 
@@ -24,7 +24,7 @@ Nous allons nous focaliser sur HTTP en version 1. Dans cette version, les requê
 
 ![Exemple de requête](images/exemple-reponse.jpg)
 
-Source: [https://www.pierre-giraud.com/http-reseau-securite-cours/requête-reponse-session/]
+Source: https://www.pierre-giraud.com/http-reseau-securite-cours/requête-reponse-session/
 
 HTTP étant un protocole, il est extrêmement normé : il n'y a pas de place au hasard. Il doit également être très flexible pour permettre tout type d'échanges. 
 
