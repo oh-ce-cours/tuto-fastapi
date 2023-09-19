@@ -59,4 +59,11 @@ L'api de la bibliothèque est assez simple :
     * `response.json()` pour avoir le json associé à la réponse 
 
 
-Vous pouvez trouver un code d'exemple dans le fichier `../codes/exemple_requests.py`
+Vous pouvez trouver un code d'exemple dans le fichier `../codes/exemple_requests.py`. Pour le faire fonctionner, vous devez installer les requirements présent à la racine du projet (`pip install -r requirements.txt`)
+
+
+## Conclusion
+
+Vous pouvez effectuer des requêtes HTTP aussi bien à travers un navigateur web, qu'en ligne de commande ou en python. Vous comprenez donc mieux la partie "client" du cycle de réponse. 
+
+Dans le prochain chapitre, nous verrons comment créer un serveur HTTP grâce à `fastapi`.
