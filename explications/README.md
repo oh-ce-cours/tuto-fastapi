@@ -1,69 +1,104 @@
-# Chapitre 2 : automatiser des requêtes HTTP 
+# Chapitre 3 : premiers pas avec fastapi 
+## Installation 
 
-## Les outils 
+Nous avons rajouté fasapi aux dépendances du projet : `pip install -r requirements.txt`
 
-Quelque soit votre appareil ou système d'exploitation, vous possédez déjà au moins un outils pour effectuer des requêtes HTTP : votre navigateur internet. 
+Parmis les dépendances notable de `fastapi`, nous pouvons noter : 
+* `starlette` : un framework HTTP asynchrone 
+* `pydantic` : un outil de validation / sérialisation / désérialisation de données 
 
-Vous pouvez les voir en ouvrant les "Outils de développement". Voici un exemple en me connectant au site avec Chrome sous Mac : https://reqres.in/api/users?page=1 
-
-Suivez les flèches pour voir le bon onglet puis la requête ou la réponse. 
-
-![Exemple d'analyse de requête avec Chrome](./images/chrome_network_tools.png)
-
-Le navigateur est un outil intéressant pour analyser du HTTP (il est globalement fait pour). Cependant, il n'est pas prévu pour automatiser des requêtes HTTP. 
-
-Pour cela, nous pouvons utiliser, en ligne de commande : 
-* curl / wget 
-* n'importe quel language de programmation (nous allons regarder avec python)
-
-## Curl 
-
-Pour tester curl, vous devez ouvrir une ligne de commande et taper `curl`. S'il n'est pas installé, regardez comment faire pour votre OS (sous windows installez `git bash`).
-
-Globalement la syntaxe de curl est assez simple : `curl [OPTIONS] URL`. L'outils sortira le résultat dans la console par défaut. 
-
-Essayez : `curl 'https://reqres.in/api/users?page=1'` 
-
-Pour changer de verbe HTTP et passer des options :  
-* nous allons récupérer l'utilisateur 2 : 
-    * `curl 'https://reqres.in/api/users/2'` 
-    * La réponse est : `{"data":{"id":2,"email":"janet.weaver@reqres.in","first_name":"Janet","last_name":"Weaver","avatar":"https://reqres.in/img/faces/2-image.jpg"},"support":{"url":"https://reqres.in/#support-heading","text":"To keep ReqRes free, contributions towards server costs are appreciated!"}}`
-* nous allons créer un utilisateur `John Doe` qui est chercheur dans l'api (verbe HTTP POST): `
-    * `curl -X POST -d '{"name": "John Doe","job": "Researcher"}' 'https://reqres.in/api/users'`. 
-    * La réponse est la suivante : `{{"name": "John Doe","job": "Researcher"}":"","id":"516","createdAt":"2023-09-17T20:21:24.248Z"}` l'utilisateur est créé sous l'id `516`
-* nous allons mettre à jour l'utilisateur 2023 (requete HTTP PUT) : 
-  * `curl -X PUT -d '{"first_name": "Matthieu"}' 'https://reqres.in/api/users/2023'`
-  * et la réponse : `{"{"first_name": "Matthieu"}":"","updatedAt":"2023-09-17T20:30:28.992Z"}`
-
-Protip : depuis chrome / firefox vous pouvez copier n'importe quelle requête effectuée par le navigateur sous format `curl`. 
-
-![Copie d'une requete au format curl](./images/chrome_copie_curl.png)
-
-Protip 2 : il est possible (et c'est couramment le cas) d'utiliser  `jq` pour analyser les résultat d'une API json directement depuis la ligne de commande 
-
-![Alt text](./images/jq.png)
-
-Testez la requêtes suivante pour comprendre l'intérêt de l'outil : `curl 'https://reqres.in/api/users?page=1' | jq ".data[].email"`
-
-## Python 
-
-En python nous pouvons utiliser la bibliothèque tierce `requests` pour faire facilement des requêtes HTTP. Il existe des bibliothèques fournies de base avec le language, mais `requests` est plus simple pour commencer (globalement tout le monde l'utilise pour ça). 
-
-Pour l'installer : `pip install requests` 
-
-L'api de la bibliothèque est assez simple : 
-* `requests.get`, `requests.post`, `request.delete`... vous permet de choisir le verbe 
-* si vous voulez passer des paramètres ajoutez : `json={"mes datas": "sous forme de dictionnaire"}` lors de l'appel, la bibliothèque fera les conversions automatiquement
-* vous allez obtenir un objet `requests.response` qui possède peut se manipuler comme cela : 
-    * `response.status_code` pour le code de la réponse 
-    * `response.json()` pour avoir le json associé à la réponse 
+En effet, `fastapi` se base sur `starlette` tout en permettant de gérer facilement des validations de données grâce à `Pydantic` qui est intégré facilement. [Plus d'informations ici](https://fastapi.tiangolo.com/fr/alternatives/#:~:text=Starlette%20fournit%20toutes%20les%20fonctionnalit%C3%A9s,Python%20(en%20utilisant%20Pydantic)).
 
 
-Vous pouvez trouver un code d'exemple dans le fichier `../codes/exemple_requests.py`. Pour le faire fonctionner, vous devez installer les requirements présent à la racine du projet (`pip install -r requirements.txt`)
+Nous verrons tout cela dans le chapitre suivant, pour l'instant, nous allons nous faire nos premiers pas avec `fastapi`. 
+
+## Ma première route 
+
+Globalement, quand vous développez dans un langage de haut niveau une application web, vous n'avez pas besoin de vous occuper du HTTP (au moins dans un premier temps). C'est le framework qui va l'abstraire pour vous. 
+
+Tout ce qui doit vous inquiéter c'est : *qu'est-ce que je dois faire lorsqu'un utilisateur appelle une certaine URL ?!*. Vous verrez que déjà répondre à cette question n'est pas forcément évident :) 
+
+`fastapi` vous permet de facilement lier un motif d'*url* à une fonction python, en utilisant un décorateur. Comment un décorateur fonctionne sort du cadre de ce cours, sachez que c'est le `@` que l'on verra dans les codes. Plusieurs frameworks python font cela (`flask` par example).
+
+Tout les codes que nous verrons sont inspirés du [tutoriel officiel de fastapi](https://fastapi.tiangolo.com/fr/tutorial/first-steps/). 
+
+Voilà comment cela fonctionne. Nous avons créé le fichier suivant dans le dossier `codes/main.py`
+
+```python 
+from fastapi import FastAPI # on importe fastapi
+
+app = FastAPI() # on créé une application 
 
 
-## Conclusion
+@app.get("/") # le fameux décorateur liant la fonction "root" à l'url "/"
+def root():
+    return {"message": "Hello World"} # ce qui sera retourné quand on appelle l'endpoint "/" 
+```
 
-Vous pouvez effectuer des requêtes HTTP aussi bien à travers un navigateur web, qu'en ligne de commande ou en python. Vous comprenez donc mieux la partie "client" du cycle de réponse. 
+Ce code permet de réagir aux requetes `GET` effectuée sur l'url racine : `/` 
 
-Dans le prochain chapitre, nous verrons comment créer un serveur HTTP grâce à `fastapi`.
+Pour le lancer il suffit de lancer la commande suivante dans un terminal situé dans le dossier `codes` : `uvicorn main:app --reload` 
+
+* `uvicorn` est le serveur web qui nous allons utiliser pour gérer les requetes 
+* `main:app` indique de charger la variable `app` du fichier `main.py` situé dans le dossier courant
+* `--reload` indique de redémarrer automatiquement le serveur quand il détecte que le contenu du fichier `main.py` a changé 
+
+
+Cela affichera les lignes suivantes : 
+```shell 
+(tuto-fastapi) ➜  codes git:(3-fastapi-premiers-pas) ✗ uvicorn main:app --reload
+INFO:     Will watch for changes in these directories: ['***/tuto-fastapi/codes']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [12519] using StatReload
+INFO:     Started server process [12521]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+```
+
+Le serveur est maintenant lancé, il attend les requêtes. Nous pouvons lui en faire :  
+* accédez à l'url avec votre navigateur : `http://127.0.0.1:8000/`
+* (exercice pour le lecteur) : effectuer la requête avec `curl` ou en python avec `request` 
+
+
+PS: pour ceux qui se posent la question, contrairement au tutoriel, je n'utilise pas `async def` pour définir mes fonctions, pour ne pas vous embrouiller avec l'asynchrone. Pour plus d'informations, regardez [la partie expliquant l'asynchrone sur le site de fastapi](https://fastapi.tiangolo.com/fr/async/#vous-etes-presses). 
+
+
+## Créer plusieurs routes 
+
+Pour créer plusieurs routes, il suffit de les déclarer en utilisant le décorateur de fastapi. 
+
+Vous pouvez voir cela en pratique dans le fichier `codes/plusieurs_routes.py`. 
+
+Pour voir si vous avez bien compris posez vous les questions suivantes : 
+1. comment lancer `uvicorn` pour qu'il utilise cette application ? 
+1. quelles sont les routes exposées ? 
+1. comment est géré le routage / l'ordre de priorité sur les routes ?
+1. que se passe-t-il si j'accède à une route qui n'existe pas ? 
+1. que se passe-t-il si je modifie une des routes pour intégrer une erreur côté serveur (par exemple `1/0`) ?
+
+<details>
+  <summary>Réponses</summary>
+  
+  1. `uvicorn plusieurs_routes:ma_super_application --reload`
+  1. `/date`, `/time` et `/datetime` 
+  1. actuellement, comme nos routes sont en dur, `fastapi` va détecter correctement nos différentes routes. Si une partie de l'url était variable (nous verrons dans le chapitre suivant comment faire), on pourra se poser des questions. 
+  1. `fastapi` retourne une 404 car l'URL n'existe pas. Note: notre code n'a jamais été appelé, c'est `fastapi` qui gère ça tout seul 
+  1. `fastapi` retourne une 500 car le code crash coté serveur : toutes les exceptions qui arrivent au framework vont générer des erreurs 500 (on peut retrouver les exceptions et la stacktrace dans le terminal)
+
+</details>
+
+
+## Gérer les différents verbes HTTP 
+
+
+## Conclusion 
+
+Nous venons de voir les bases de `fastapi` pour créer notre première API. 
+
+Le framework gère toute la machinerie HTTP pour nous, afin que nous puissions nous concentrer sur le code métier.
+
+L'API est actuellement assez peu dynamique car : 
+* elle ne réagit qu'à des URLs écrites en dur 
+* n'accepte pas de paramètres
+
+Nous verrons comment répondre à ces deux problèmes dans le chapitre suivant. Évidemment `fastapi` va nous simplifier la vie. 
