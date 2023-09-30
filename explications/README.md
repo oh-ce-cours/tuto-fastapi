@@ -120,3 +120,5 @@ L'API est actuellement assez peu dynamique car :
 * n'accepte pas de paramètres
 
 Nous verrons comment répondre à ces deux problèmes dans le chapitre suivant. Évidemment `fastapi` va nous simplifier la vie. 
+
+Pour accéder au prochain chapitre: `git switch 4-fastapi-parametres`

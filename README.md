@@ -35,4 +35,4 @@ Les branches sont nommées de la façon suivante : `NUMERO_DE_CHAPITRE.SECTION-D
     git switch MA_BRANCHE
 
 ## Aller au chapitre suivant     
-Maintenant, faites : `git switch 3-fastapi-premiers-pas`
+Maintenant, faites : `git switch 4-fastapi-parametres`
