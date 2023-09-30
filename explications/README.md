@@ -90,6 +90,24 @@ Pour voir si vous avez bien compris posez vous les questions suivantes :
 
 ## Gérer les différents verbes HTTP 
 
+Pour voir comment réagir à différents verbes, allez voir le fichier `codes/plusieurs_fichiers.py`. 
+
+Pour voir si vous avez bien compris posez vous les questions suivantes : 
+1. quels sont les verbes disponibles ? 
+1. comment faire pour appeler les différentes fonctions ? 
+1. que se passe-t-il lorsque l'on demande un verbe non implémenté dans le code (par exemple `patch` dans le fichier d'exemple) ? 
+
+<details>
+  <summary>Réponses</summary>
+  
+  1. `.get`, `.post`, `.delete`, `.put`, `.patch`, c'est à dire les différents verbes HTTP
+  1. on va utiliser `curl` ou `requests` pour faire les requêtes, un navigateur ne permet de n'effectuer simplement (sans coder) que des requetes GET
+    * pour get: `curl -X GET localhost:8000`
+    * pour post: `curl -X POST localhost:8000`
+    * pour delete: `curl -X DELETE localhost:8000`
+  1. `fastapi` le gère pour nous, en renvoyant une erreur `405` (Method Not Allowed)
+
+</details>
 
 ## Conclusion 
 
